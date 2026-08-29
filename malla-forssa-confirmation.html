@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Malla Forssa — Confirmer la livraison</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#121212;
+    --paper:#EDEAE2;
+    --paper-dim:#c9c5ba;
+    --brass:#C9A227;
+    --line:#3a3a38;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--ink);
+    background-image:radial-gradient(ellipse 60% 40% at 50% 0%, rgba(201,162,39,.10) 0%, transparent 100%);
+    color:var(--paper);
+    font-family:'Work Sans',sans-serif;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    padding:32px 16px 60px;
+  }
+  .card{width:100%;max-width:440px;}
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;letter-spacing:3px;text-transform:uppercase;
+    color:var(--brass);text-align:center;margin-bottom:6px;
+  }
+  .wordmark{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:36px;letter-spacing:2px;text-align:center;
+    color:var(--paper);margin-bottom:28px;
+  }
+  .panel{
+    background:#181818;
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:30px 24px 26px;
+  }
+  .panel h2{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:22px;letter-spacing:.5px;margin-bottom:6px;
+  }
+  .panel .sub{
+    font-size:13px;color:var(--paper-dim);
+    margin-bottom:24px;line-height:1.5;
+  }
+  .field{margin-bottom:18px;}
+  .field label{
+    display:block;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;
+    color:var(--brass);margin-bottom:7px;font-family:'IBM Plex Mono',monospace;
+  }
+  .field input,.field select{
+    width:100%;background:#0f0f0f;border:1px solid var(--line);border-radius:8px;
+    padding:13px 14px;color:var(--paper);font-family:'Work Sans',sans-serif;
+    font-size:15px;outline:none;transition:border-color .2s;
+  }
+  .field input:focus,.field select:focus{border-color:var(--brass);}
+  .field input::placeholder{color:#5a5a58;}
+  .field select:disabled{opacity:.4;}
+  .row2{display:flex;gap:12px;}
+  .row2 .field{flex:1;}
+  select{
+    appearance:none;-webkit-appearance:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%23C9A227' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 14px center;
+  }
+  .submit-btn{
+    width:100%;margin-top:8px;background:var(--brass);color:#181818;border:none;
+    border-radius:8px;padding:15px;font-family:'Bebas Neue',sans-serif;font-size:17px;
+    letter-spacing:1.5px;cursor:pointer;transition:transform .15s, background .2s;
+  }
+  .submit-btn:hover{background:#dcb135;transform:translateY(-1px);}
+  .submit-btn:active{transform:translateY(0);}
+  .foot-note{text-align:center;font-size:11px;color:var(--paper-dim);margin-top:18px;line-height:1.6;}
+  @media (prefers-reduced-motion:no-preference){.card{animation:rise .5s ease both;}}
+  @keyframes rise{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="eyebrow">Malla Forssa</div>
+  <div class="wordmark">CONFIRMER LA LIVRAISON</div>
+
+  <div class="panel">
+    <h2>Vos coordonnées</h2>
+    <p class="sub">Votre commande est réservée. Entrez vos coordonnées pour que votre colis soit préparé et expédié.</p>
+
+    <form id="deliveryForm" method="POST" action="REPLACE_WITH_N8N_WEBHOOK_URL">
+
+      <!-- Order/admin fields travel with the link (query string), never shown to the client -->
+      <input type="hidden" name="dropDate" id="hDropDate">
+      <input type="hidden" name="designation" id="hDesignation">
+      <input type="hidden" name="prix" id="hPrix">
+      <input type="hidden" name="nombreArticle" id="hQty">
+      <input type="hidden" name="commentaire" id="hCommentaire">
+      <input type="hidden" name="ouvrirColis" value="NON">
+      <input type="hidden" name="estFragile" value="NON">
+
+      <div class="field">
+        <label>Nom complet</label>
+        <input type="text" name="nom" placeholder="Nom et prénom" required>
+      </div>
+
+      <div class="field">
+        <label>Adresse complète</label>
+        <input type="text" name="adresse" placeholder="Numéro, rue, quartier..." required>
+      </div>
+
+      <div class="row2">
+        <div class="field">
+          <label>Téléphone</label>
+          <input type="tel" name="telephone" placeholder="52123456" inputmode="numeric" pattern="\\d{8}" maxlength="8" required>
+        </div>
+        <div class="field">
+          <label>Tél. secondaire</label>
+          <input type="tel" name="telephone2" placeholder="Optionnel" inputmode="numeric" pattern="\\d{8}" maxlength="8">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Gouvernorat</label>
+        <select id="gouvernorat" name="gouvernorat" required>
+          <option value="" disabled selected>Sélectionnez</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Ville / Délégation</label>
+        <select id="ville" name="ville" required disabled>
+          <option value="" disabled selected>Choisissez d'abord un gouvernorat</option>
+        </select>
+      </div>
+
+      <button type="submit" class="submit-btn">Confirmer la livraison</button>
+    </form>
+
+    <p class="foot-note">Vos données servent uniquement à préparer votre colis.<br>Malla Forssa — La bonne affaire, livrée chez vous.</p>
+  </div>
+</div>
+
+<script>
+  // Official Gouvernorat -> Ville/Délégation list, sourced from First Delivery Group's
+  // own bulk-order template (Feuil2). Static and offline: no API call, no cost, and
+  // guarantees the client can only submit a Ville value that's valid for the chosen
+  // Gouvernorat -- eliminating the fuzzy-match / manual-review problem entirely.
+  const LOCALITIES = {"ARIANA":["Charguia 1","Charguia 2","Centre Urbain Nord","Aéroport Tunis Carthage","El Manar 1","El Manar 2","El Manar 3","Ennaser 1","Ennaser 2","El Menzah 1","El Menzah 4","El Menzah 5","El Menzah 6","El Menzah 7","El Menzah 8","El Menzah 9","El Menzah 9A","El Menzah 9B","El Menzah 9C","Les jardin d'el Manzeh 1","Les jardin d'el Manzeh 2","Cité Essaha","Cité el Mansoura","Cité Annassim","Cité Hedi Nouira","Cité el Behi Ladghem","Sidi Sofien","Mosquée Erraoudha","Cité el Bassatine 1","Cité el Bassatine 2","Cité el Bassatine 3","Mnihla","Mnihla Supérieur","Cité el Intilaka","Cité Rafeha","Cité de la République","Essanhaji","Nogra","Pont de Bizerte","Bjeoua 1","Bjeoua 2","El Nahli","Kalâat el Andalous","Cité Chaker","Bou Hnach","Jabbes","Cité el Bokri","Géant","Cebalat Ben Ammar","Borj Youssef","Sidi Thabet","Chorfech 1","Chorfech 2","Cité el mileha","Borj el Baccouche","Nouvelle Ariana","Cité Ennozha","Beb el hdid","El Monguela","Mago","Tribunal","Rond-point Lhay","Abattoir","Raoued Plage","Raoued Poste","Jaâfer","Nour Jaâfer","Sidi Amor","Enkhilet","El Ghazela 1","El Ghazela 2","Pôle Technologique","Ariana Soghra","Cité Essahafa","Riadh el Andalous","Aychoucha","El Brarja","Cité el Yamema","Borj Touil","Rue 105","Rue 106","Cité 18 Janvier","CITE ETTAYARENE","CITE SFAR","CITE EL HOUDA","CITE SNIT 2","CITE SNIT NAGRA","CITE ENNASSER Ethadhamen","Chotrana 1","Chotrana 2","Chotrana 3","Sidi Salah","Sidi Fradj","Rue de l'Aéroport","Dar Fadhal","Rue de Parc","Cité Ezzitoun","Cité Fateh","Avenue de l'UMA"],"BEJA":["Beni Melek","Bouris","Adailia","Ain El Goussa","Ain Ghenem","Eddghabjia","Edhhirat","El Fraijia","El Ghorfa","El Graia","El Hlikat","El Jouza","El Mjales","Gaat El Mouhdi","Ghouzia","Maghraoua","Menzel Hammed","Remadhnia","Sidi Mbarek","Sidi Saadoun","Sobah","Zahret Mediene","El Ayayda","El Homr","Menzel El Gourchi","Ksar Bardo","18 Janvier","Mzara","Manar","Béja Jadida","Béja Centre Ville","Rass Mzara","AFH","Jbal Lakhdher","Haweri","Sidi Fraj","Maagoula","Bellerj","Menchar","Hamrounia","Montasar","Ksar Mezwar","Mkhachbia","Briouig","Cheik El Ouediane El Guebli","Dur Ismail","El Fedhailia","El Gammarti","El Ogla","Ettraifa","Goubellat","Khacheb","Khenguet Eddihenne","Tella","Zone Industrielle","Grame","Bir El Euch","Louatia","Oued Ezzitoun","Oued Zarga","El Ksar","Toukaheur","Sidi Mediene","Sidi Nasser","Argoub Ezzaatar","Gueriche El Oued","Hidous","Iden","Mejez El Bab","Sidi Ahmed Jedidi","El Griaat","Chaouech","El Herri","El Ayayada Jamila","Jbel Diss","Jemil","Nefza","Oued Bouzenna","Oued Damous","Ouled Houimel","Ouled Kacem","Oum Laabid","Tababa","Ain Zakkar","Bou Garnouna","El Hemaidia","El Mecherga","El Oulija","Ettaref","Ezzouaraa","Ouechtata","Ouled Salem","Zaga","El Mazdour","Fatnassa","Beni Said","Dar El Hit","El Amamria","Ain El Hammam","Khalled","Dougga Rouines","El Ayedh","El Faouar","El Matria","Naffet","Ouled Marai","Rihana","Teboursouk","Fadden Essouk","Ain El Kehoul","Ain El Melliti","Ain Jemmala","Bir Ettouta","Bouzaida","Douga","Borj Brahim","El Mellah","Esslouguia","Jebel Fellous","Ouljet Doukhane","Ain Younes","Bab Bled","El Glaa","Jlass Bou Issa","Mezougha","Oued Jedra","Ouled Slama","Rhiba","Testour","Zeldou","Esskhira","Henchir Bou Sofra","Ain Tounga","Djebba","Thibar","Ain Eddefali","Ennechima","El Henancha"],"Ben Arous":["La Cagna","Cité Thameur","Sidi Fathallah","Jebel Jloud","Cité Fateh","El Ouardia 1","El Ouardia 2","El Ouardia 3","El Ouardia 4","El Ouardia 5","El Ouardia 6","Dibouzville","Bellevue","Monhomme","13 Août","Cité Mohamed Ali","El Mourouj 1","El Mourouj 2","El Mourouj 3","El Mourouj 4","El Mourouj 5","El Mourouj 6","Nouvelle Medina","El Yasminette","Bir el Bey","Hammam Chatt","Borj Cedria","EL KABBARIA 1","EL KABBARIA 2","EL KABBARIA 3","EL KABBARIA 4","Cité Ennour","Cité Bou Hjar","Ibn Sina","Rades Plage","Rades Forêt","Rades Meliane","Rades Monjil","Rades el Mrah","Chouchet Rades","Zone Pétrolière","Zone Industrielle 1","Zone Industrielle 2","Cité Mohamed Ali Rades","Cité Taieb Mhiri","Cité el Ezz","Cité Ennour Rades","Cité olympique Rades","Noubou","Rades Saline","Megrine Riadh","Zone Industrielle Megrine Riadh","Saint Gobain","Zone Industrielle Saint Gobain","Sidi Rezig","Zone Industrielle Sidi Rzig","Megrine Chaker","Megrine Jaouhara","Megrine Supérieur","Cité 7 Novembre","Cité Casino","Cité Dar el Bey","Cité de la Municipalité","Cité des Instituteurs","Cité Ennahdha","Cité Ennasr","Cité Ennouzha","Cité Essanaoubaria","Cité Hached","Cité Kortoba","Cité Monji Slim","Cité Office Céréales","Cité Boussouffara","Cité Taher Sfar","Boukornine 1","Boukornine 2","Hammem Linf Centre","Meghira Centre","Meghira Inzel","Zone Industrielle El Meghira","Chebedda","Douar El Houch","Naâssen","Cité Brim","Cité Chebbi","Cité el Amal 1","Cité el Amal 2","Cité el Hana","Cité Naoures","Cité el Hidhab","Cité el Ezdihar","Cité el Misk","Cité el Moustakbel","Cité el Wifak","Cité Ennasr","Cité Ennouzha","Cité Erriadh","Cité Ezzotoun 1","Cité Khouaja","Cité SNIT","Cité Trabelsi","Ezzahra Borj Louzir","Loulija","Cité el Habib","Cité Panorama","Cité Ennakhil","Cité du Stade","Zone Industrielle Ben Arous","Cité el Isken","Cité Taâmir","Cité Mostawsef","Avenue de France","Cité Administratif","Avenue de Bizerte","Errissala","Ain Regad","Barrouta","Bir Jedid","El Gounna","Henchir Kharrouba","Khelidia","Kouenjel","Sidi Massoud","Sidi Othman Landari","Sondage","El Abebsa","El Fendria","Ouzra","Sidi Saâd","Tarhouna 1","Tarhouna 2","Zaouit Morneg","El Kabouti","Borj Essoufi","Jebel Ersass","Bou Jerdga","El Alelga","El Haouamed","El Ksibi","Douar la Port","Douar Salem","Mirghna","Cité el Amen","Cité el Atik","Cité el Baccouche","Cité el Bassatine","Cité el Elmi 1","Cité Ennouzha","Cité Erriadh","Cité Essaâda 1","Cité Essaâda 2","Cité Essaâda 3","Cité Essalem","Cité Ettayari","Cité Ettouahria","Cité Ezzitoun 2","Cité Bou Akroucha","Cité Bourbai","Cité Cebbalet Chikh","Cité Chaâben","Cité Chebbi","Cité Taieb Mhiri","Cité el Elmi 2","Cité el Hadded","Cité el Hana","Cité el Ksar","Cité el Omri 1","Cité el Omri 2","Cité Ennassim 1","Cité Ennassim 2","Cité Ennasr","Cité Fattouma Bourguiba","Cité Hached 1","Cité Hached 2","Cité Jaouhara","Cité Monji Slim 1","Cité Monji Slim 2","Cité Tnich","Sidi Fradj","El Khlij","Cité el Bassatine 1","Cité el Bassatine 2","Cité Plein Air","Cité el Mouna","Cité Essafa","Cité Essalem","Cité Sprols","Cité el Mahrajene","Cité Chela","Cité el Ferchichi","Cité el Iklil"],"Bizerte":["El Alia","Rafraf","Tekreya","Ghezala","Cap Sirat","Kef Abbed","Sidi Mechreg","Sejnane","Jarzouna","Joumine","Bazina","Sidi Abdallah","El Bakhreya","El Mahroug","Sidi Othmen","Mateur","Menzel Jemil","Cap Zebib","El Metline","Ras Jebel","Utique","Zhena","Menzel Bourguiba","Bir Massyougha","Hafer Mhor","Sikma","El Korniche","Ennadhour","Sidi Salem","Cité El Hana","Bizerte Centre"],"Gabès":["El Hamma","Ouethref","El Metouia","Ghannouche","Mareth","Matmata","Nouvelle Matmata","Menzel Habib","Bou Chemma","Cheninni Gabes","Nahal","Chatt Essalem","Beb Bhar","Jara","El Menzel","Gabes République","Gabes Port","Sidi Boulbeba","Zrig","Mtorrech","Teboulbou","Cité el Amal","Chentich","Assobkha","El Mnara"],"Gafsa":["Belkhir","El Guittar","El Ksar","El Mdhila","El Metlaoui","Oum Laarayes","Redayef","Sidi Aich","Sned","Zannouche","Sidi Boubaker","Oum Ligsab","Gafsa Centre","Menzel Mimoun","Echabiba","Ouled Zid","Doualy","Sidi Ahmed Zarrouk"],"Jendouba":["Babouch","Ain Draham","El Atatfa","Sidi Abdallah","Sidi Mhamed","Ain El Hamraya","El Houmrane","Oued Ezzene","Tebainia","Esseloul","Adissa","Hammam Bourguiba","Rouai","Tegma","Ouled Helal","Ouled Hassen","Balta","Bou Aouene","El Aouaoudha","Essoumrane","El Marja","Badrouna","Beni Mhamed","Bou Laaba","Bou Salem","Echtaibia","Ejouablia","El Alayeg","El Fazzen","El Fejouj","El Haouamd","El Houjjaj","El Magroun","Eroouaba","Essmaibia","Fernana","Sidi Said","Zaaroura","Bou Hertma","Jentoura","Ain Charchara","Ain El Beya","Bou Halleb","Jouaouda","Hedhil","Oued Gherib","Ouled Mfedda","Rabia","Rmila","Beni Mtir","Argoub Rihane","Sidi Ammar","Betaha","Grioua","Halima","Ain Soltane","El Biadha","El Feija","Esraya","Ezzraibia","Ghardimaou","Ouechtata","Zitounet Oum Lahneche","Ouerguech","Oued El Maaden","El Ganara","Jerif","Ben Bechir","Bellarigia","Essanabel","Zghadia","Souk Essebt","El Azima","Mitil","El Melga","Essaada","Ain El Khararib","Ain El Ksir","Oued Mliz","Edkhailia","Sidi Meskine","Hakim","Ras Errajel","Ain Essnoussi","Ouled Yahya","Cooperative Centrale Des Grandes Cultures","Touajnia","Brirem","El Khedhairia","Jaballah","Tabarka Aeroport","El Haouamdia","El Farech","Sidi Rouine","Tabarka","Ain Essobh","Bou Terfes","Sidi Asker"],"Kairouan":["Jehina","Bir Ahmed","Bir Lahjar","Bou Hajla","Ennasr","Ouled Achour","Bir Eddaoula","El Fateh","Rouissette","Sidi Abdallah Belhaj","Ouled Khalfallah","Ouled Khelif","Ouled Nasser","El Aouamria","Abida Cherguia","Ain El Beydha","Ben Salem","Gragaya","Hammed","El Karma","Chebika","Cheraitia","Cherarda","El Aouyed","El Ksour","Ouled Farjallah","Ghidhifette","El Ala","Sayada Sud","El Msaid","Messiouta","Ouled Ennaguez","Ain Sayada","Ecole Ettoual","Ecole Trazza","Ecole Jouamia","El Fjejria","Oued El Jabbes","Ouled Mehrez","Ouled Ali","Sayada Nord","Ain El Ghrab","Cherichira","El Alia","El Aoudid","Ezzorg","Haffouz","Khit El Oued","Ain Majouna","El Ghuoiba","El Manar","El Menassa","Hajeb El Ayoun","Hajeb El Ayoun Gare","Ouled Ameur","Thallaja","Ouled Abbes","Dhraa Ettammar","Kairouan Okba","Sidi Dhameni","El Baten","El Ghabette","El Moutbasta","Argoub El Khadhra","El Khadhra","Raccada","El Borji","El Argoub Lahrech","El Makhsouma","El Mrazig","Kairouan","Kairouan Sud","Ain El Khazzazia","Zaafrana","Sidi Saad","El Ajabna","El Ksour","Nasrallah","El Kabbara","Erragouba El Hamra","El Hamidette","Touila","Menzel Mhiri","Oueslatia","Ksar Lamsa","Ain Jelloula","Ain Mastour","Oued El Guessab","El Friouette","Hendi Zitouna","Chorfa","Chougafia","El Gfey","El Khodher","Oued Nebhana","Sbikha","El Alem","Dar Ben Aicha","Dar Jamiya","El Gatifa","El Aouitha","Daloussi","Sisseb","Ain Boumourra","Eddikhila","Dhriaat","Sidi Messaoud"],"Kasserine":["El Ayoun","Feriana","Bou Chebka","Bou Deryes","Foussena","Khmouda","Boulaaba","Thala","Hidra","Sbiba","Jediliane","Mejel Bel Abbes","Sbeitla","Kasserine Centre"],"Kébili":["Douz","El Faouar","Rjim Maâtoug","Souk El Ahad","Kébili Centre"],"La Manouba":["Avenue Habib Bourguiba","Hôpital El Kassab","Hôpital Errazi","Sidi Amor","Slimen Kehia","Complexe Universitaire","Cité Ben Younes","Souk Jomâa","Senyet Ben Abdallah","Denden","Cité el Amal","Cité Dhamen 2","Cité 7 Novembre","CITE AFH","Cité Ben Arfa","Bjeoua","Cité Bouzid","Cité el Moezzia","Cité el Moultaka 1","Cité Ettourjmene","Cité Marseille","Cité Militaire","Oued Ellil Centre","Cité Ennacim","Cité Erriadh Zone C","Cité Erriadh Zone F","Essaîda","Cité Khaled Ibn El Walid","Route 55","Route 56","Cité des Jeunes","Jbal Ammar","Bir Ezzitoun","Goumriane","Cité el Mallassine","Cité Arraja","Cité Errimel","Route Chouigui","Chouigui","Cité El Kef Lahmer","Edkhila","El Ansarine","El Malleha","Cité Souayah","Cité de la Palestine","Cité el Argoub","Argoub Ettoumi","Cité 7 Novembre","Cité Chebbi","Cité de France","El Mhajer","Beb El Oued","Oued Khmis","Thniba","Hammed","El Mahfoura","Ezouitina","El Arroussia","Tongare","Borj Ettoumi","El Mahrine","El Mansoura 2","Cité el Houda","Cité Ennour","Cité Ben Ghneya","El Mansoura","El Henna","Jdayda Ancienne","Nouvelle Jdayda","Chaouat","El Habibia","Ezehra","Ethniba","Cité Mokhtar","Cité Trabelsi","Cité Najiba","Sidi Salem","Cité Bel Hay","Cité de la RTT","Cité Dhamen","Cité el Hideya","Cité Annajet","Cité Ennour","Cité Hached","Cité Errifi","Sidi Ali El Hattab","Bou Hnach","CITE BIR BEN NJIMA","El Fejja","Bouragba","El Hmayem","Ghdhaounia","El Bassatine","Cité Toumia","Cité Bir Ben Njima","Cité 20 Mars","Cité de la RTT 3","Cité Ennasr","Ghdir El Gholla","Cité Ben Yedder","Cité Essaâda","Cité Mazhouda","Cité des Jasmins","Mornaguia","Aouilia","Menzel Habib","Teboltech","Ksar Hadid","Bir Ettouil","Borj Ennour","El Messaâdine","Drijette","Enfaiedh","Bor El Amri"],"Le Kef":["Abida","Adissi","Ain Meskhia","Charket Essaboun","Zouarine","Dahmani","Sidi Asker","Sidi Baraket Nord","Sidi Baraket Sud","El Ksour","Ezzitouna","Ain El Fedhil","Ain Ksiba","Banou","Echaabna","Eddhila","El Afset","El Hmarna","El Houilat","Louata","Ouled Bouraoui","Ouled Ghana","Ouled Zid","Kirata","El Gorraia","El Hayadra","Ennaiem","Esbiaat","Fej Ettamr","Henchir Sarrat","Jerissa","Jerissa Gare","Oum El Kelil","Ain El Garsa","Kalaa El Khasba","Sidi Ahmed Essalah","El Felta","Erreibiba","Kalaat Sinane","Safsaf","Ain Sinan","Bou Jabeur","Barnoussa","Bou Meftah","Zaafrane","Semana","Oued Souani","Sidi Mansour","Zone Industrielle","Bahra","Borj El Aifa","Ennaima","Oued Erraml","Oued Tessa","Salah El Bahri","Bir Heddi","Bou Sliaa","El Argoub","El Mellaha","Elles","Labar","Le Sers","Le Vieux Sers","Lorbous","Lorbous Gare","Sidi Nasser","Tricha","Nebeur","Zone Industrielle","Oued Mellegue","Sidi Khiar","Tell Ghouzlane","Ain El Henchir","Tabia","Ain El Karma","Essakia","Farchen","Jeradou","La Mine","Place De La Republique","Sidi Rabeh","Mahjouba","Sidi Mtir","La Gare","Garn El Halfaya","Sidi Abdelbasset","Tajerouine Gare","Menzel Salem","Jazza","Tajerouine","El Hodh","Ladhieb","Mellala","Ouljet Essedra","Touiref","Gargour","Bir Ben Cherifa"],"Mahdia":["Bou Merdes","Menzel Hamza","Zerata","Bou Helal","El Aouadhbia","El Melahma","Errebibette","Kerker","Ennaima","Chouaria","El Hous","Errouadhi","Chorbane","El Khiour","El Gouassem","Charaf","El Bassora","El Gradha Est","El Gradha Ouest","Henchir Bouaziz","Kheradna","Maati Cheraf","Maati Henchir Bouaziz","Ouled Abdennebi","Ouled Ahmed","Ouled Cherifa","Ouled El Hannachi","Ouled Sghaier","Chahda","Neffatia","El Jem","El Mechelette","Ouled Farhat","Beni Thabet","El Achaba","Sidi Bou Helal","Tlelsa","Zeghabna","Touahra","El Aitha","Ouled El Haj","Riadh Bou Helal","Hbira","Menzel Hached","Meharza 18","Regaiga","Chatt Ouled Ncib","El Hajjara","Chahda Ouest","Agba","Ksour Essaf","Salakta","El Ghedhabna","El Khmara","Ouled Salah","Sidi Assaker","Rechercha","La Chebba","Ferahta","Merkez Chaabna","Mahdia","Mahdia Essouk","Mahdia Hiboun","Mahdia Republique","Mahdia Ezzahra","Rejiche","Chiba","Essaad","Jouaouda","Zouaouine","Merkez Ouled Dhaouadi","Melloulech","Ouled Jaballah","Beni Tourch","Ouled Abdallah","Ouled Mabrouk","El Houd","El Mansoura","Ouled Chamakh","Bou Slim","El Ajilette","El Mharza Est","El Manaa","Ouled Bouzid","Somra","Chehimet","Ouled Amor","Sidi Alouene","Sakiet El Khadem","Sidi Ali Ghedir","El Braghtia","Zorda","Baajla","Ennouzha","Ouled Aicha","Zelba","Oued Guelat","El Mejria","Merkez Ouled Haj Khelifa","Zelba El Henchir","Oued Beja","Essaada","El Henichette","El Bassatine","Souassi","Ethouabtia","Ezzeirate","Gdarate","Jemiaat","Ouled Amor","Ouled Bou Helal","Ouled Khelifa","Ouled Moulahoum","Jemamla","El Mansoura Souassi","Sidi Bou Helal","Rejibet","Ouled Moulahoum Sud","Ksesba","Sidi Zid","Chaara","Essetoute","Sidi Naceur Nord"],"Médenine":["Ben Guerden","Ras Jdir","Jallel","Beni Khedache","Djerba Houmet Souk","Djerba Midoun","Sidi Makhlouf","El Grine","Ejorf","Zarzis Centre","Hassi Jerbi","Medenine Centre","Route Tatouine","Route Ben Guerden","Route Beni Khedache","Route Gabes","Route Djerba"],"Monastir":["Baghdadi","Bekalta","Guealla","Ouled Hedda","El Behira","Ouled Issa","Ouled Touibi","Zebid","Charaf","Bembla","Menzel Ennour","Mazdour","Menzel Harb","Menara","Beni Hassen","Ghenada","Amirat Hatem","Jemmal","Jemmal Kheireddine","Bir Taieb","Ettiayra","Zaouiet Kontech","Menzel Kamel","El Hedadra","Ksar Helal Riadh","Ksar Helal","Touza","Bennane","Ksibet El Mediouni","Bou Dher","Sidi Bannour","Moknine","Moknine El Jadida","Amirat El Fehoul","Amirat Touazra","Amirat El Hojjej","Menzel Fersi","Cherahil","Monastir","Khenis","Zone Hoteliere","Monastir Gare","Monastir Republique","Zone Skanes","Monastir Aeroport","Bou Othmane","Menzel Khir","Ouerdanine","Mootmar","Sahline","Mesjed Issa","Sidi Ameur","Sayada","Sidi Abdessalem","Lamta","Bou Hajar","Soukrine","Teboulba","Menzel Hayet","Zeramdine","Mzaougha","Mlichette"],"Nabeul":["Beni Khalled","Bir Drassen","Beni Khiar","Essomâa","Diar Ben Salem","El Maâmoura","Ghardeya","Bou Argoub","Dar Chaâben El Fehri","Bayoub","El Frenine","El Haouaria","Zaouiet El Magueyez","Zougueg","Beni Khira","Saheb Jebel","Grombalia","Fondouk Jedid","Cité Saltene","Khanguet El Hojjej","Turki","Batrou","Nianou","Hammamet Centre","Hammamet Sud","Cité AFH","El Mrezga","Bir Bouragba","Barraket Sahel","Sidi Hammed","Hammem Bent Jdidi","Kélibia","Dar Allouche","Hammem El Ghezaz","Korba","Tazarka","Bou Lidine","Jbal Hadded","Bou Jrida","Lathleth","Menzel Bouzelfa","Damous El Hajja","Errahma","Tekelsa","Baddar","Kalboussi","Menzel Temim","El Mida","Lebna","Menzel Horr","Nabeul","Solimen","Cité Riadh","Bou Charray","Solimen Plage","Korbous"],"Sfax":["BEB BHAR","Nasria","Route Sidi Mansour","Route Saltnia","Route Mahdia","Route Tanyour","Route Gremda","Route Lafrane","Route Ain","Route Tunis","Route Menzel Cheker","Route Matar","Route Soukra","Route Mharza","Route Gabes","Route Kaid Mohamed","Agareb","Ben Sahloun","El Mahrouga","El Maraania","REl Msadga","Zeliana","Gargour","Bir Ali Ben Khelifa","Sidi Mansour","Sidi Dhafer","Bir Aouled Mahmoud","Oued Rekham","El Guendoul","El Amra","El Fidh","El Mhara","Essaadi","Markez El Khemiri","El Hencha","El Ghraba","El Hajjara","Markez Choucha","Soualmia","Bir Salah","Bir Lahmer","El Khecherma","Doukhane","Esskhira","El Maghdhia","Soueni","Frichette","Chraiba","Jebeniana","Kerkenah","Mahras","Smara","Chaffar","Menzel Chaker"],"Sidi Bouzid":["Ben Oun","Bir El Haffey","Cebbala","Jilma","Maknassy","Menzel Bouzaiene","Mezzouna","Ouled Haffouz","Souk Jedid","Regueb","Sîida","El Fayedh","Lassouda","El Makarem","Oum El Adham","Sidi Bouzid Centre"],"Siliana":["Sidi Said","Sidi Zid","El Bhirine","Ain El Fourna","Ain Zakkar","Bargou","Drija","Marj Aouam","Sidi Amara","Bou Saadia","Ain El Ghessil","Bou Arada","El Fetisse","El Mejenine","Jelidi Gare","Ksar Boukhris","Sidi Abdennour","El Aroussa","El Hajjej","Mosrata","Oued El Araar","Bou Jlida","Sidi Ayed","Gaafour","Gaafour Chergui","Gaafour Gharbi","Nouisser","Mellita","Bennouria","El Abarguia","Ain Zrig","El Barrama","Mediouna","Kesra","Beni Abdallah","Hammam Kesra","El Mansoura","Bou Abdallah","Kesra Superieur","Ezzaouia","El Garia","El Garia Sud","Le Krib","Ouled Bouzid","Borj Messaoudi","Doukhania","Souk El Jomaa","Merkez Ben Njah","Fej El Hadoum","Zouakra","Makthar","Sned Haddad","El Khalsa","Chouarnia","Ras El Oued","Khizrane","Errouhia","Jemilette","Fondouk Debbich","Magrouna","Hebabsa Sud","El Msahla","El Hmaima","Bou Rouis","Ain Achour","Nechem","Ouled Selit","Sidi Jabeur","Essafina","Douar Ezzriba","El Kantra","Zaouiet Sidi Abdelmalek","Sidi Ameur","Sidi Morched","Sidi Hamada","Fidh Arous","Ain Drissa","Sidi Mansour","Ain El Jouza","Siliana Centre","Cité du Lycée","Cité de la République","Cité Monji Slim","Cité Hached","Cité Erriadh","Cité Essalah","Cité Ezzouhour","Cité Ennour"],"Sousse":["Halg el Menjel","Chatt Mariem","Tantana","Akouda","Oued el Kharroub","Essalloum","Sidi Mtir","Lenderia","Sidi Said","Bou Ficha","Sidi Khelifa","Ain Errahma","Ain Medheker","Dhehaibia","El Frada","El Ghoualif","El Ghouilet","Enfidha","Essafha","Essmaidia","Grimit Est","Grimit Ouest","Hicher","Menzel Fateh","Methalithe","Mrabet Hached","Ouled Abdallah","Ouled Bellil","Ouled Mohamed","Sidi Saidane","Takrouna","Menzel Bel Ouaer","Chegarnia","Ain Garci","Hammam Sousse Gharbi","Hammam Sousse","El Kantaoui","El Aribat","Hergla","Souayeh","Ahel Jemaa","Belaoum","El Kraria","Kalaa El Kebira","Ouled Lesseoud","Chiab","Kalaa El Kebira Ksar","Ennagr","Kalaa Essghira","Oued Laya","Bir Jedid","Blelma","El Bechachma","Kondar","Ouled Ameur","Ouled El Abed","Tarhouna","Messadine","Chihia","El Knaies","Beni Rabia","El Borjine","El Frada","Beni Kalthoum","Msaken","Msaken El Gueblia","Moureddine","Msaken Hai Jedid","Ouriemma","Sidi Bou Ali","Menzel Gare","Essad Nord","Kenana","El Mhedhba","Essad Sud","El Araydhia","El Alouj","El Aitha","El Mouissette","Ghabghoub","Ouled Ali B Hani","Ouled Alouene","Ouled Amor","Ouled Boubaker","Ouled El Kbaier","Ouled El Khechine","Sidi El Heni","Zerdoub","Cherachir","Kroussia","Cite de la STEG","Cite Sidi Daher","Sousse Khezama","Cite Sahloul","Sahloul","Cite Aeroport","Cite Batiments","Cite Ben Aleya","Cite El Ghoudrane","Cite Sidi Abdelhamid","Sousse Ibn Khaldoun","Khezama Ouest","Sousse Riadh","Sousse Ezzouhour","Ksibet Sousse","Thrayette","Zaouiet Sousse","Cite Boukhzar","Cite Cheminots","Cite CNRPS","Cite Garde Nationale","Cite Hached","Cite Hadrumette","Cite Jaouhara","Cite Khedher","Cite Militaire","Cite Rizzi","Cite Sprols","Sousse Corniche"],"Tozeur":["Tameghza","Nafta","Hezoua","Degueche","El Hamma","Tozeur Centre"],"Zaghouan":["Ain El Asker","Sminja","Bir Mcherga","Boucha","Delaiel El Arouss","Ouled Helel","Bir Mcherga Gare","Jebel El Oust","Jebel Mansour","Bir Moukra","Borj Abdeljalil","Bou Garnine","Chenanfa","Kef Ezzroug","Jougar","Khemayssia","Koudouat Chair","Oued El Khadhra","Oum El Abouab","Rehahla","Sed Oued El Kebir","Sidi Amara","Sidi Naoui","Tebika","Tlil Essalhi","Sidi Aouidette","Bent Saidane","Dhraa Ben Jouder","El Amaiem","El Fahs","El Knaziz","Gherifat","Glib Jemal","Henchir Brouta","Henchir Dhomda","Jabbes","Soughas Sud","Ben Halaoua","Chaalil Nord","Chaalil Sud","Dhorbania","Soughas Nord","Ouled Jaballah","Erragba","El Hnainia","Ain El Battoum","Bou Araara","Ennadhour","Sidi Bannour","Sidi Naji","Souar","Zbidine","Zouagha","Bir Chaouch","Chebaana","Kef Agueb","Meidher","Mrigueb","Jeradou","Ain Batria","Bou Achir","Oued El Kenz","Zriba","Hammam Zriba","Charchara","Dghafla","Douar El Haj Amor","El Hmira Sud","El Khadhra","Halg Ennab","Henchir El Hamira","Oued Touil","Saouef","Sidi Dghim","Sidi Farjallah","Sidi Mansour","Zagtoun","Zeguidane","Oued Ezzit","El Mhedhba","Hemiane","Jimla","Kantra El Kahla","Merkez Ali Besseghaier","Mhiris","Oued Sbaihia","Sidi Mraieh","Zaghouan","El Magren","Bou Slim","Hammam Jedidi","Ain Essaboune","Ain Lansarine","Ain Ledhieb","Ain Safsaf","Bni Darraj","Bni Mar","Bir Halima"],"Tunis":["Gammarth village","Gammarth supérieur","Gammarth Touristique","Route Gammarth","Carrefour gammarth","Gammarth relais","Marsa Ville","Marsa plage","Marsa Stade","Sidi Abdulaziz","Lahwech","Cité el Hokkem","Bouselsla","Jbal Khawi","Cité Arrabiî","Cité el Khalil","Cité Nacer","Tabak","Borj El Houki","Maâlga","Cité Les Pins","Café Journale","Bhar lazreg","Essaâda","El Abidet","Cité Sofien","Cité el Habib","Amilcar","Carthage Byrsa","Carthage Plage","Carthage Présidence","Cité Mohamed Ali","Salambo","El Yasmina","Sidi Bousaîd","Jardins de carthage","Le kram Est Plage","5 Décembre","Sidi Amor","Zone Industrielle Kram","Casino La Goulette","Kheireddine","La Goulette Ancienne","La Goulette Nouvelle","Ain Zaghouen Nord","Ain Zaghouen Sud","Sidi Daoued","Monji Slim","Zoueydia","LAC 1","LAC 2","Cité Taieb Mhiri","Les jardins de l'aouina","Cité les Palmeraies","Cité Essalama","Jbal El Ahmar","Cité des Oliviers","El Omrane","Cité Olympique","Les Jardins","Cité Mahrajène","Mutuelleville","Notre Dame","Alain Savary","Beb Saadoun Gare","Beb Saadoun Hôpitaux","Beb Sidi Abdeslem","Borj Zouara","Beb Lakwes","El Halfaouine","El Kallaline","El Hafsia","Hammem Rmimi","Beb Bnet","Beb El Alouj","Tronja","Beb El Assel","Sidi El Bahri","Beb El Khadhra","Avenue de Madrid","Avenue Hedi Chaker","Avenue 9 Avril","Les tribunaux","Moncef bey","BAB BHAR","BAB EL JAZIRA","Avenue de carthage","TGM","HABIB THAMEUR","Avenue habib bourguiba","Rue El Jazira","Le Passage","Avenue de Ghana","Lafayette","Avenue Mohamed 5","MONTPLAISIR","Le belvédère","El Sabaghine","Sidi Boumendil","Souk El Nhas","Zrarîa","Sidi Ali Azouz","Tourbet el Bey","Mosquée Zitouna","Cité Ettahrir Supérieur","Cité el Ferdaous","Cité du Jardin","Cité Assiddik","El Omrane Supérieur","Cité Ibn Khaldoun","Cité Rommena 2 Ibn Khaldoun","Beb Aloui","Beb Jdid","Beb Mnara","Beb El Falla","Avenue de la Gare","Maâkel Ezzaiîm","Souk el Asr","El Gorjeni","Montfleury","Essaida el Mannoubia","Cité hélal","El Mellassine","Sidi el Bechir","Le Bardo","Bortal Hayder","Bouchoucha","20 Mars","Cité du Stade","Ksar Sîid","Khaznadar","Cité Fattouma Bourguiba","Lahneya","Jayara","Cité Mrad","Cité Bettoumi","Cité Bou Gatfa","Borj Chakir","Cité 20 Mars","Cité Omar El Mokhtar","Birine","Cité el Fath","Route el Attar","Cité 25 Juillet","Ezzahrouni","Cité Hwas","Cité Bouzayen","Cité Essalama","Cité Essoltani","Cité Errachidia","Cité Bougatfa 1","Cité Jlas","Cité Mannoubia","El Agba","Dia Ben Mahmoud","Cité el waha","Cité el Mechtel","Cité el Fehri","Cité Ezzouhour 1","Cité Ezzouhour 2","Cité Ezzouhour 3","Cité Ezzouhour 4","Cité Essomrane","Cité Attayarane","Rond-point ben dahha"],"Tataouine":["Bir Lahmer","Ghomrassen","Remada","Dhehiba","Tataouine Centre","Nouvelle Tataouine","Ksar Aouled Dabbeb","Cité Mahrajene","Oued El Gamh","Cité Ennour","Beni Mhira","Smaar"]};
+
+  const govSelect = document.getElementById('gouvernorat');
+  const villeSelect = document.getElementById('ville');
+
+  Object.keys(LOCALITIES).forEach(gov => {
+    const opt = document.createElement('option');
+    opt.value = gov;
+    opt.textContent = gov;
+    govSelect.appendChild(opt);
+  });
+
+  govSelect.addEventListener('change', () => {
+    const villes = LOCALITIES[govSelect.value] || [];
+    villeSelect.innerHTML = '';
+    const placeholder = document.createElement('option');
+    placeholder.value = '';
+    placeholder.disabled = true;
+    placeholder.selected = true;
+    placeholder.textContent = 'Sélectionnez';
+    villeSelect.appendChild(placeholder);
+    villes.forEach(v => {
+      const opt = document.createElement('option');
+      opt.value = v;
+      opt.textContent = v;
+      villeSelect.appendChild(opt);
+    });
+    villeSelect.disabled = villes.length === 0;
+  });
+
+  // Reads order/admin details from the link's query string (attached when the link
+  // is generated for this client's drop) and copies them into hidden fields --
+  // the client never sees or edits designation, prix, quantity, or dropDate.
+  // Example link:
+  //   https://yourdomain.com/malla-forssa-confirmation.html?dropDate=29-08-2026&designation=Zara%20Chemise%20Slim%20-%20Taille%20M&prix=89&qty=1
+  const params = new URLSearchParams(window.location.search);
+  document.getElementById('hDropDate').value = params.get('dropDate') || 'sans-date';
+  document.getElementById('hDesignation').value = params.get('designation') || '';
+  document.getElementById('hPrix').value = params.get('prix') || '';
+  document.getElementById('hQty').value = params.get('qty') || '1';
+  document.getElementById('hCommentaire').value = params.get('commentaire') || '';
+</script>
+
+</body>
+</html>
