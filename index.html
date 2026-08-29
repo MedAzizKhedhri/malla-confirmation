@@ -92,7 +92,7 @@
     <h2>Vos coordonnées</h2>
     <p class="sub">Votre commande est réservée. Entrez vos coordonnées pour que votre colis soit préparé et expédié.</p>
 
-    <form id="deliveryForm" method="POST" action="REPLACE_WITH_N8N_WEBHOOK_URL">
+    <form id="deliveryForm" method="POST" action="http://localhost:5678/webhook/malla-forssa-confirm">
 
       <!-- Order/admin fields travel with the link (query string), never shown to the client -->
       <input type="hidden" name="dropDate" id="hDropDate">
